@@ -43,7 +43,7 @@ public class DistributedLockApplication {
 	}
 
 	@Bean
-	public IntegrationFlow approvalDataPackageFileFlow() {
+	public IntegrationFlow fileProcessingFlow() {
 		return IntegrationFlow.from(
 						Files.inboundAdapter(new File(inputDirectory))
 								.autoCreateDirectory(true)
