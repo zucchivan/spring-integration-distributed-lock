@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.1.0'
+	//id "org.hibernate.build.xjc-jakarta" version "1.0.2"
+	id 'org.unbroken-dome.xjc' version '2.0.0'
 }
 
 group = 'com.zucchivan'
@@ -17,6 +19,13 @@ dependencies {
 	implementation 'org.springframework.integration:spring-integration-file'
 	implementation 'org.springframework.integration:spring-integration-xml'
 	implementation 'org.springframework:spring-oxm'
+	implementation 'com.thoughtworks.xstream:xstream:1.4.20'
+
+	/* JAXB */
+	implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.0"
+	implementation "com.sun.xml.bind:jaxb-impl:4.0.0"
+	xjcTool 'com.sun.xml.bind:jaxb-impl:3.0.0'
+	xjcTool "com.sun.xml.bind:jaxb-xjc:3.0.0"
 
 	/* Test */
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
