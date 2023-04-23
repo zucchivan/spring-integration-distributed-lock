@@ -1,0 +1,40 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jxb="https://jakarta.ee/xml/ns/jaxb" jxb:version="3.0">
+  <xs:element name="SampleData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FilteringContext">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="Type"/>
+              <xs:element type="xs:string" name="Region"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TextResource" type="xs:string"/>
+        <xs:element name="AttributeMapList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AttributeMap">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="attribute" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="k"/>
+                            <xs:attribute type="xs:string" name="v"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

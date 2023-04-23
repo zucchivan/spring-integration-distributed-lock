@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SampleData>
+	<FilteringContext>
+		<Type>A</Type>
+		<Region>LATAM</Region>
+  	</FilteringContext>
+  	<TextResource/>
+	<AttributeMapList>
+		<AttributeMap>
+			<Attribute k="testAttr0" v="testValue0"/>
+		</AttributeMap>
+		<AttributeMap>
+			<Attribute k="testAttr1" v="testValue1"/>
+		</AttributeMap>
+		<AttributeMap>
+			<Attribute k="testAttr2" v="testValue2"/>
+		</AttributeMap>
+		<AttributeMap>
+			<Attribute k="testAttr3" v="testValue3"/>
+		</AttributeMap>
+		<AttributeMap>
+			<Attribute k="testAttr4" v="testValue4"/>
+		</AttributeMap>
+	</AttributeMapList>
+</SampleData>
