@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.1.0'
-	//id "org.hibernate.build.xjc-jakarta" version "1.0.2"
+	id 'org.flywaydb.flyway' version '9.16.3'
 	id 'org.unbroken-dome.xjc' version '2.0.0'
 }
 
@@ -21,6 +21,12 @@ dependencies {
 	implementation 'org.springframework:spring-oxm'
 	implementation 'com.thoughtworks.xstream:xstream:1.4.20'
 
+	/* Database */
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation 'org.flywaydb:flyway-core:9.16.3'
+	implementation 'org.flywaydb:flyway-mysql:9.16.3'
+
 	/* JAXB */
 	implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.0"
 	implementation "com.sun.xml.bind:jaxb-impl:4.0.0"
@@ -30,8 +36,17 @@ dependencies {
 	/* Test */
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.integration:spring-integration-test'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+flyway {
+	url = project.properties['spring.datasource.url']
+	user = project.properties['spring.datasource.username']
+	password = project.properties['spring.datasource.password']
+	locations = ['classpath:db/migration']
+	// = 'distributed-lock-poc-db'
 }
