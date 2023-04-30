@@ -35,32 +35,42 @@ public class DistributedLockApplication {
 	@Value("${file.archive.suffix}")
 	private String archiveFileSuffix;
 
-	private final DummyFileHandler dummyFileHandler;
-
 	private static final DateTimeFormatter ARCHIVE_FILE_DATE_FORMAT =
 			DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
-
-	public DistributedLockApplication(DummyFileHandler dummyFileHandler) {
-		this.dummyFileHandler = dummyFileHandler;
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(DistributedLockApplication.class, args);
 	}
 
 	@Bean
-	public IntegrationFlow fileProcessingFlow() {
+	public IntegrationFlow fileProcessingFlow(
+			DummyFileHandler dummyFileHandler) {
 		return IntegrationFlow.from(
 						Files.inboundAdapter(new File(inputDirectory))
 								.autoCreateDirectory(true)
 								.preventDuplicates(true)
 								.patternFilter(filePattern),
 						e -> e.poller(Pollers.fixedDelay(filePollingDelay)))
-				.handle(dummyFileHandler)
-				.handle(Files.outboundGateway(new File(archiveDirectory))
-								.fileNameGenerator(this::generateFileName)
-								.deleteSourceFiles(true))
+				.publishSubscribeChannel(
+						channel -> {
+							channel.subscribe(
+									flowDefinition ->
+											flowDefinition.handle(
+													Files.outboundGateway(new File(archiveDirectory))
+														.fileNameGenerator(this::generateFileName)
+														.deleteSourceFiles(true))
+													// TODO: break into transformer and persistence handler
+													.handle(dummyFileHandler)
+							);
+							channel.subscribe(
+									flowDefinition ->
+											flowDefinition.handle(
+													Files.outboundGateway(new File(archiveDirectory))
+															.fileNameGenerator(this::generateFileName)
+															.deleteSourceFiles(true)));
+						})
 				.get();
+
 	}
 
 	public String generateFileName(Message<?> message) {
@@ -68,5 +78,4 @@ public class DistributedLockApplication {
 				+ message.getHeaders().get(FileHeaders.FILENAME)
 				+ archiveFileSuffix;
 	}
-
 }

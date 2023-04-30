@@ -1,3 +1,5 @@
+import org.flywaydb.gradle.task.FlywayMigrateTask
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.5'
@@ -23,9 +25,9 @@ dependencies {
 
 	/* Database */
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'mysql:mysql-connector-java:8.0.32'
-	implementation 'org.flywaydb:flyway-core:9.16.3'
-	implementation 'org.flywaydb:flyway-mysql:9.16.3'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.32'
+	runtimeOnly 'org.flywaydb:flyway-core:9.16.3'
+	runtimeOnly 'org.flywaydb:flyway-mysql:9.16.3'
 
 	/* JAXB */
 	implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.0"
@@ -48,5 +50,4 @@ flyway {
 	user = project.properties['spring.datasource.username']
 	password = project.properties['spring.datasource.password']
 	locations = ['classpath:db/migration']
-	// = 'distributed-lock-poc-db'
 }
