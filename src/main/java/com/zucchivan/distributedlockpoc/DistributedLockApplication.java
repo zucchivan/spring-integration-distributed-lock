@@ -44,7 +44,7 @@ public class DistributedLockApplication {
 
 	@Bean
 	public IntegrationFlow fileProcessingFlow(
-			DummyFileHandler dummyFileHandler) {
+			FilteringContextTransformer filteringContextTransformer) {
 		return IntegrationFlow.from(
 						Files.inboundAdapter(new File(inputDirectory))
 								.autoCreateDirectory(true)
@@ -60,7 +60,7 @@ public class DistributedLockApplication {
 														.fileNameGenerator(this::generateFileName)
 														.deleteSourceFiles(true))
 													// TODO: break into transformer and persistence handler
-													.handle(dummyFileHandler)
+													.handle(filteringContextTransformer)
 							);
 							channel.subscribe(
 									flowDefinition ->

@@ -1,7 +1,6 @@
 package com.zucchivan.distributedlockpoc.model;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "filtering_context")
@@ -16,6 +15,10 @@ public class FilteringContext {
 
 	@Column(name = "region", nullable = false)
 	private String region;
+
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "attribute_map_id", nullable = false)
+	private AttributeMapData attributeMapData;
 
 	public Integer getId() {
 		return id;
