@@ -1,4 +1,4 @@
-package com.zucchivan.distributedlockpoc;
+package com.zucchivan.distributedlockpoc.integration;
 
 import com.zucchivan.distributedlockpoc.model.FilteringContext;
 import com.zucchivan.distributedlockpoc.repository.FilteringContextRepository;
