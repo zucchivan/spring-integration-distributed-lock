@@ -6,6 +6,15 @@ import jakarta.persistence.*;
 @Table(name = "filtering_context")
 public class FilteringContext {
 
+	public FilteringContext() {}
+
+	public FilteringContext(Integer id, String type, String region, AttributeMapData attributeMapData) {
+		this.id = id;
+		this.type = type;
+		this.region = region;
+		this.attributeMapData = attributeMapData;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
