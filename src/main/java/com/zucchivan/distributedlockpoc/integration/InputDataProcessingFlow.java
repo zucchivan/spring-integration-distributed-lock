@@ -24,15 +24,19 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 
 	private final FileWritingMessageHandlerSpec outboundFileAdapter;
 
+	private final IntegrationFlow archivingFlow;
+
 
 	public InputDataProcessingFlow(FilteringContextTransformer filteringContextTransformer,
 	                               ContextPersistenceHandler contextPersistenceHandler,
 	                               FileInboundChannelAdapterSpec inboundFileAdapter,
-	                               FileWritingMessageHandlerSpec outboundFileAdapter) {
+	                               FileWritingMessageHandlerSpec outboundFileAdapter,
+	                               IntegrationFlow archivingFlow) {
 		this.filteringContextTransformer = filteringContextTransformer;
 		this.contextPersistenceHandler = contextPersistenceHandler;
 		this.inboundFileAdapter = inboundFileAdapter;
 		this.outboundFileAdapter = outboundFileAdapter;
+		this.archivingFlow = archivingFlow;
 	}
 
 	@Override
@@ -45,13 +49,17 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 					}
 				)
 				.publishSubscribeChannel(
-					pubSubConfigurer -> {
-						pubSubConfigurer.id("pubSubEndpoint");
-						pubSubConfigurer.subscribe(getFilteringContextSubflow());
-						pubSubConfigurer.subscribe(flowDefinition -> flowDefinition.handle(outboundFileAdapter));
+					pubsub -> {
+						pubsub.id("pubSubEndpoint");
+						pubsub.subscribe(getFilteringContextSubflow());
+						pubsub.subscribe(subflow -> subflow.channel(c -> c.queue("pubSubBridgeChannel")));
+						pubsub.subscribe(subflow -> subflow.gateway(archivingFlow));
+						//pubsub.subscribe(subflow -> subflow.handle(outboundFileAdapter));
 					}
 				);
 	}
+
+
 
 	private IntegrationFlow getFilteringContextSubflow() {
 		return flowDefinition -> flowDefinition
