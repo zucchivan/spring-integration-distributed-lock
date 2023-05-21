@@ -44,17 +44,19 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 		return IntegrationFlow.from(
 					inboundFileAdapter,
 					e -> {
-						e.id("inputDataProcessingFlowEndpoint");
+						e.id("dataProcessingFlowEndpoint");
 						e.poller(Pollers.fixedDelay(filePollingDelay));
 					}
 				)
+				.fixedSubscriberChannel("fixedSubChannel")
+				.channel("queueChannel")
 				.publishSubscribeChannel(
 					pubsub -> {
 						pubsub.id("pubSubEndpoint");
 						pubsub.subscribe(getFilteringContextSubflow());
 						pubsub.subscribe(subflow -> subflow.channel(c -> c.queue("pubSubBridgeChannel")));
 						pubsub.subscribe(subflow -> subflow.gateway(archivingFlow));
-						//pubsub.subscribe(subflow -> subflow.handle(outboundFileAdapter));
+						pubsub.subscribe(subflow -> subflow.handle(outboundFileAdapter));
 					}
 				);
 	}
