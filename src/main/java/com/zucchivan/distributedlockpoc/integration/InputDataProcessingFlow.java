@@ -22,21 +22,16 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 
 	private final FileInboundChannelAdapterSpec inboundFileAdapter;
 
-	private final FileWritingMessageHandlerSpec outboundFileAdapter;
-
-	private final IntegrationFlow archivingFlow;
-
+	private final FileWritingMessageHandlerSpec archivingHandler;
 
 	public InputDataProcessingFlow(FilteringContextTransformer filteringContextTransformer,
 	                               ContextPersistenceHandler contextPersistenceHandler,
 	                               FileInboundChannelAdapterSpec inboundFileAdapter,
-	                               FileWritingMessageHandlerSpec outboundFileAdapter,
-	                               IntegrationFlow archivingFlow) {
+	                               FileWritingMessageHandlerSpec archivingHandler) {
 		this.filteringContextTransformer = filteringContextTransformer;
 		this.contextPersistenceHandler = contextPersistenceHandler;
 		this.inboundFileAdapter = inboundFileAdapter;
-		this.outboundFileAdapter = outboundFileAdapter;
-		this.archivingFlow = archivingFlow;
+		this.archivingHandler = archivingHandler;
 	}
 
 	@Override
@@ -53,19 +48,13 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 				.publishSubscribeChannel(
 					pubsub -> {
 						pubsub.id("pubSubEndpoint");
-						pubsub.subscribe(getFilteringContextSubflow());
+						pubsub.subscribe(flowDefinition -> flowDefinition
+								.transform(filteringContextTransformer)
+								.handle(contextPersistenceHandler));
 						pubsub.subscribe(subflow -> subflow.channel(c -> c.queue("pubSubBridgeChannel")));
-						pubsub.subscribe(subflow -> subflow.gateway(archivingFlow));
-						pubsub.subscribe(subflow -> subflow.handle(outboundFileAdapter));
+						pubsub.subscribe(subflow -> subflow.handle(archivingHandler));
 					}
 				);
 	}
 
-
-
-	private IntegrationFlow getFilteringContextSubflow() {
-		return flowDefinition -> flowDefinition
-				.transform(filteringContextTransformer)
-				.handle(contextPersistenceHandler);
-	}
 }

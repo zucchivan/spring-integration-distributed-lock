@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.config.EnableIntegration;
-import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.file.FileHeaders;
 import org.springframework.integration.file.dsl.FileInboundChannelAdapterSpec;
@@ -56,19 +55,10 @@ public class IntegrationContextConfig {
 	}
 
 	@Bean
-	public FileWritingMessageHandlerSpec outboundFileAdapter() {
+	public FileWritingMessageHandlerSpec archivingHandler() {
 		return Files.outboundGateway(new File(archiveDirectory))
 				.fileNameGenerator(this::generateArchiveFileName)
 				.deleteSourceFiles(true);
-	}
-
-	@Bean(name = "archivingFlow")
-	public IntegrationFlow archivingFlow() {
-		return f -> f.handle(
-				Files.outboundGateway(new File(archiveDirectory))
-						.fileNameGenerator(this::generateArchiveFileName)
-						.deleteSourceFiles(true)
-		);
 	}
 
 	private String generateArchiveFileName(Message<?> message) {
