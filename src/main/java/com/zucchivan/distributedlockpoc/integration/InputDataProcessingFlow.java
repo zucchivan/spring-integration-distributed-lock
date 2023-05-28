@@ -43,15 +43,12 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 						e.poller(Pollers.fixedDelay(filePollingDelay));
 					}
 				)
-				.fixedSubscriberChannel("fixedSubChannel")
-				.channel("queueChannel")
 				.publishSubscribeChannel(
 					pubsub -> {
 						pubsub.id("pubSubEndpoint");
 						pubsub.subscribe(flowDefinition -> flowDefinition
 								.transform(filteringContextTransformer)
 								.handle(contextPersistenceHandler));
-						pubsub.subscribe(subflow -> subflow.channel(c -> c.queue("pubSubBridgeChannel")));
 						pubsub.subscribe(subflow -> subflow.handle(archivingHandler));
 					}
 				);
