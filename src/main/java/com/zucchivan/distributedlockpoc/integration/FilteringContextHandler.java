@@ -20,21 +20,14 @@ public class FilteringContextHandler implements GenericHandler<File> {
 
 	@Override
 	public SampleDataDTO handle(File payload, MessageHeaders headers) {
-		if (!(payload instanceof File file)) {
-	        /*
- 	            TODO: Add logging & create specialized exception
-	        */
-			throw new RuntimeException("Message payload is not a FilteringContext!");
-		}
-
-		try (InputStream inputStream = new FileInputStream(file)) {
+		try (InputStream inputStream = new FileInputStream(payload)) {
 			var jaxbContext = JAXBContext.newInstance(SampleData.class);
 			var unmarshaller = jaxbContext.createUnmarshaller();
 			var source = new StreamSource(inputStream);
 			var unmarshalled = unmarshaller.unmarshal(source, SampleData.class).getValue();
 			var filteringContext = new FilteringContext(unmarshalled.getFilteringContext());
 
-			return new SampleDataDTO(filteringContext, file);
+			return new SampleDataDTO(filteringContext, payload);
 		} catch (IOException | JAXBException e) {
 	        /*
 	        Throwing a generic exception is not recommended, but as this is just a PoC, it's fine.
