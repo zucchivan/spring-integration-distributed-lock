@@ -1,0 +1,1 @@
+ALTER TABLE attribute_map_data RENAME TO attribute_map_list;

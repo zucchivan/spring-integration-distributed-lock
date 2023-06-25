@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "attribute_map_data")
-public class AttributeMapData {
+public class AttributeMapList {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

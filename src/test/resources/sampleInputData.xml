@@ -6,20 +6,55 @@
   	</FilteringContext>
   	<TextResource/>
 	<AttributeMapList>
-		<AttributeMap>
-			<Attribute k="testAttr0" v="testValue0"/>
+		<AttributeMap id="0">
+			<Attribute k="testAttr00" v="testValue00"/>
+			<Attribute k="testAttr01" v="testValue01"/>
+			<Attribute k="testAttr02" v="testValue02"/>
+			<Attribute k="testAttr03" v="testValue03"/>
+			<Attribute k="testAttr04" v="testValue04"/>
+			<Attribute k="testAttr05" v="testValue05"/>
+			<Attribute k="testAttr06" v="testValue06"/>
+			<Attribute k="testAttr07" v="testValue07"/>
 		</AttributeMap>
-		<AttributeMap>
-			<Attribute k="testAttr1" v="testValue1"/>
+		<AttributeMap id="1">
+			<Attribute k="testAttr10" v="testValue10"/>
+			<Attribute k="testAttr11" v="testValue11"/>
+			<Attribute k="testAttr12" v="testValue12"/>
+			<Attribute k="testAttr13" v="testValue13"/>
+			<Attribute k="testAttr14" v="testValue14"/>
+			<Attribute k="testAttr15" v="testValue15"/>
+			<Attribute k="testAttr16" v="testValue16"/>
+			<Attribute k="testAttr17" v="testValue17"/>
 		</AttributeMap>
-		<AttributeMap>
-			<Attribute k="testAttr2" v="testValue2"/>
+		<AttributeMap id="2">
+			<Attribute k="testAttr20" v="testValue20"/>
+			<Attribute k="testAttr21" v="testValue21"/>
+			<Attribute k="testAttr22" v="testValue22"/>
+			<Attribute k="testAttr23" v="testValue23"/>
+			<Attribute k="testAttr24" v="testValue24"/>
+			<Attribute k="testAttr25" v="testValue25"/>
+			<Attribute k="testAttr26" v="testValue26"/>
+			<Attribute k="testAttr27" v="testValue27"/>
 		</AttributeMap>
-		<AttributeMap>
-			<Attribute k="testAttr3" v="testValue3"/>
+		<AttributeMap id="3">
+			<Attribute k="testAttr30" v="testValue30"/>
+			<Attribute k="testAttr31" v="testValue31"/>
+			<Attribute k="testAttr32" v="testValue32"/>
+			<Attribute k="testAttr33" v="testValue33"/>
+			<Attribute k="testAttr34" v="testValue34"/>
+			<Attribute k="testAttr35" v="testValue35"/>
+			<Attribute k="testAttr36" v="testValue36"/>
+			<Attribute k="testAttr37" v="testValue37"/>
 		</AttributeMap>
-		<AttributeMap>
-			<Attribute k="testAttr4" v="testValue4"/>
+		<AttributeMap id="4">
+			<Attribute k="testAttr40" v="testValue40"/>
+			<Attribute k="testAttr41" v="testValue41"/>
+			<Attribute k="testAttr42" v="testValue42"/>
+			<Attribute k="testAttr43" v="testValue43"/>
+			<Attribute k="testAttr44" v="testValue44"/>
+			<Attribute k="testAttr45" v="testValue45"/>
+			<Attribute k="testAttr46" v="testValue46"/>
+			<Attribute k="testAttr47" v="testValue47"/>
 		</AttributeMap>
 	</AttributeMapList>
 </SampleData>

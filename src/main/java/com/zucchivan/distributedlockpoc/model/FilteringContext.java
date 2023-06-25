@@ -1,5 +1,6 @@
 package com.zucchivan.distributedlockpoc.model;
 
+import generated.SampleData;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,13 +8,6 @@ import jakarta.persistence.*;
 public class FilteringContext {
 
 	public FilteringContext() {}
-
-	public FilteringContext(Integer id, String type, String region, AttributeMapData attributeMapData) {
-		this.id = id;
-		this.type = type;
-		this.region = region;
-		this.attributeMapData = attributeMapData;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +21,12 @@ public class FilteringContext {
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "attribute_map_id", nullable = false)
-	private AttributeMapData attributeMapData;
+	private AttributeMapList attributeMapList;
+
+	public FilteringContext(SampleData.FilteringContext filteringContext) {
+		this.type = filteringContext.getType();
+		this.region = filteringContext.getRegion();
+	}
 
 	public Integer getId() {
 		return id;
