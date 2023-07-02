@@ -16,7 +16,7 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 	@Value("${file.input.polling.delay}")
 	private long filePollingDelay;
 
-	private final FilteringContextHandler filteringContextHandler;
+	private final SampleDataTransformer sampleDataTransformer;
 
 	private final SampleDataPersistenceHandler sampleDataPersistenceHandler;
 
@@ -24,11 +24,11 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 
 	private final FileWritingMessageHandlerSpec archivingHandler;
 
-	public InputDataProcessingFlow(FilteringContextHandler filteringContextHandler,
+	public InputDataProcessingFlow(SampleDataTransformer sampleDataTransformer,
 	                               SampleDataPersistenceHandler sampleDataPersistenceHandler,
 	                               FileInboundChannelAdapterSpec inboundFileAdapter,
 	                               FileWritingMessageHandlerSpec archivingHandler) {
-		this.filteringContextHandler = filteringContextHandler;
+		this.sampleDataTransformer = sampleDataTransformer;
 		this.sampleDataPersistenceHandler = sampleDataPersistenceHandler;
 		this.inboundFileAdapter = inboundFileAdapter;
 		this.archivingHandler = archivingHandler;
@@ -47,7 +47,7 @@ public class InputDataProcessingFlow extends IntegrationFlowAdapter {
 					pubsub -> {
 						pubsub.id("pubSubEndpoint");
 						pubsub.subscribe(flowDefinition -> flowDefinition
-								.handle(filteringContextHandler)
+								.transform(sampleDataTransformer)
 								.handle(sampleDataPersistenceHandler));
 						pubsub.subscribe(subflow -> subflow.handle(archivingHandler));
 					}

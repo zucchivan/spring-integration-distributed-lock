@@ -5,8 +5,7 @@ import com.zucchivan.distributedlockpoc.model.SampleDataDTO;
 import generated.SampleData;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import org.springframework.integration.core.GenericHandler;
-import org.springframework.messaging.MessageHeaders;
+import org.springframework.integration.file.transformer.AbstractFilePayloadTransformer;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.stream.StreamSource;
@@ -16,18 +15,18 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Component
-public class FilteringContextHandler implements GenericHandler<File> {
+public class SampleDataTransformer extends AbstractFilePayloadTransformer<SampleDataDTO> {
 
 	@Override
-	public SampleDataDTO handle(File payload, MessageHeaders headers) {
-		try (InputStream inputStream = new FileInputStream(payload)) {
+	protected SampleDataDTO transformFile(File file) {
+		try (InputStream inputStream = new FileInputStream(file)) {
 			var jaxbContext = JAXBContext.newInstance(SampleData.class);
 			var unmarshaller = jaxbContext.createUnmarshaller();
 			var source = new StreamSource(inputStream);
 			var unmarshalled = unmarshaller.unmarshal(source, SampleData.class).getValue();
 			var filteringContext = new FilteringContext(unmarshalled.getFilteringContext());
 
-			return new SampleDataDTO(filteringContext, payload);
+			return new SampleDataDTO(filteringContext, file);
 		} catch (IOException | JAXBException e) {
 	        /*
 	        Throwing a generic exception is not recommended, but as this is just a PoC, it's fine.
@@ -37,4 +36,5 @@ public class FilteringContextHandler implements GenericHandler<File> {
 			throw new RuntimeException(e);
 		}
 	}
+
 }
