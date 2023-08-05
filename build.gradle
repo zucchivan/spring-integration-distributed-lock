@@ -8,7 +8,7 @@ plugins {
 
 group = 'com.zucchivan'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '20'
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
@@ -24,6 +24,7 @@ ext {
 dependencies {
 	/* Spring */
 	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.boot:spring-boot-starter-logging'
 	implementation 'org.springframework.integration:spring-integration-file'
 	implementation 'org.springframework.integration:spring-integration-xml'
 	implementation 'org.springframework.data:spring-data-jpa'
@@ -48,7 +49,6 @@ dependencies {
 	/* Test */
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.integration:spring-integration-test'
-
 }
 
 tasks.named('test') {
